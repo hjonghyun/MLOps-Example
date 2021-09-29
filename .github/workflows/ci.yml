@@ -21,7 +21,7 @@ jobs:
 
       - name: Build Images
         run: |
-          docker build kubeflow_pipeline/0_data -t goldenbell1/mnist-pre-data
+          docker build kubeflow_pipeline/0_data -t goldenbell1/mnist-pre-data --no-cache
           docker push goldenbell1/mnist-pre-data
           docker build kubeflow_pipeline/1_validate_data -t goldenbell1/mnist-val-data
           docker push goldenbell1/mnist-val-data
