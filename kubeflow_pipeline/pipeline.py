@@ -72,7 +72,7 @@ def mnist_pipeline():
 
 if __name__=="__main__":
     host = "http://gold31006.k3.acornsoft.io"
-    namespace = "kubeflow-user-example"
+    namespace = "kubeflow-user-example-com"
     username = "user@example.com"
     password = "12341234"
     
@@ -90,7 +90,7 @@ if __name__=="__main__":
     
     pipeline_name = "Mnist"
     pipeline_package_path = "pipeline.zip"
-    version = "v0.2.2"
+    version = "v0.2.3"
 
     experiment_name = "For Develop"
     run_name = "kubeflow study {}".format(version)
