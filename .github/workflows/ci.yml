@@ -41,7 +41,7 @@ jobs:
         uses: rtCamp/action-slack-notify@v2
         env:
           SLACK_ICON_EMOJI: ':bell:'
-          SLACK_CHANNEL: #ml-cicd-test
+          SLACK_CHANNEL: #ml-cicd-msg-test
           SLACK_MESSAGE: 'Build/Push Images :building_construction: - ${{job.status}}'
           SLACK_USERNAME: 황종현
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}

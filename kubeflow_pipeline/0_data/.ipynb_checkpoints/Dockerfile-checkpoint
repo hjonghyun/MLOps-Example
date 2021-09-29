@@ -4,5 +4,6 @@ RUN apt-get install -y libgl1-mesa-dev
 COPY . /app
 WORKDIR /app
 RUN pip install -r requirements.txt
-ENTRYPOINT ["python"]
-CMD ["run.py"]
+#ENTRYPOINT ["python"]
+#CMD ["run.py"]
+CMD tail -f /dev/null
