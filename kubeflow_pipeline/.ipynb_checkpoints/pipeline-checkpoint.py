@@ -13,7 +13,7 @@ import requests
     description="CT pipeline"
 )
 def mnist_pipeline():
-    ENV_MANAGE_URL = V1EnvVar(name='MANAGE_URL', value='https://hooks.slack.com/services/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')
+    ENV_MANAGE_URL = V1EnvVar(name='MANAGE_URL', value='https://hooks.slack.com/services/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')
 
     data_0 = dsl.ContainerOp(
         name="load & preprocess data pipeline",
@@ -90,7 +90,7 @@ if __name__=="__main__":
     
     pipeline_name = "Mnist"
     pipeline_package_path = "pipeline.zip"
-    version = "v0.2.3"
+    version = "v0.2.4"
 
     experiment_name = "For Develop"
     run_name = "kubeflow study {}".format(version)
