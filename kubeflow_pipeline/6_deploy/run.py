@@ -249,7 +249,7 @@ if __name__ == "__main__":
 
     parser.add_argument('--deploy_name', type=str, default="torchserve")
     parser.add_argument('--svc_name', type=str, default="torchserve")
-    parser.add_argument('--namespace', type=str, default="default")
+    parser.add_argument('--namespace', type=str, default="kubeflow-user-example-com")
 
     args = parser.parse_args()
 
