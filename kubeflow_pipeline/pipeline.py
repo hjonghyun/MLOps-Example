@@ -100,8 +100,8 @@ if __name__=="__main__":
     experiment_name = "For Develop"
     run_name = "kubeflow study {}".format(version)
      
-    client = kfp.Client(host=f"{args.host}/pipeline", namespace=args.namespace, cookies=f"authservice_session={session_cookie}")
-    kfp.compiler.Compiler().compile(mnist_pipeline(args.manage_url), pipeline_package_path)
+    client = kfp.Client(host=f"{args.host}/pipeline", namespace=args.namespace, cookies=f"authservice_session={session_cookie}").create_run_from_pipeline_func(mnist_pipeline, arguments={args.manage_url})
+    #kfp.compiler.Compiler().compile(mnist_pipeline(args.manage_url), pipeline_package_path)
 
     pipeline_id = client.get_pipeline_id(pipeline_name)
     if pipeline_id:
