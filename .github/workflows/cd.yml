@@ -24,7 +24,7 @@ jobs:
           packages: |
             kfp==1.8.2
       - name: run pipeline to kubeflow
-        run: python kubeflow_pipeline/pipeline.py --host ${{ secrets.KUBERNETES_HOST }} --namespace ${{ secrets.PIPELINE_NAMESPACE }} --username ${{ secrets.PIPELINE_USER_NAME }} --password ${{ secrets.PIPELINE_USER_PASS }} --manage_url ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: python kubeflow_pipeline/pipeline.py
 
       - name: Slack Notification
         if: always()
