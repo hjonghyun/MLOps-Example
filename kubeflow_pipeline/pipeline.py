@@ -82,7 +82,7 @@ if __name__=="__main__":
     args = parser.parse_args()
     
     session = requests.Session()
-    response = session.get(host)
+    response = session.get(args.host)
 
     headers = {
         "Content-Type": "application/x-www-form-urlencoded",
