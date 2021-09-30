@@ -93,7 +93,7 @@ def serving(args, version):
                 client.V1Volume(
                     name="persistent-storage",
                     persistent_volume_claim=client.V1PersistentVolumeClaimVolumeSource(
-                        claim_name="serving-model-pvc"
+                        claim_name="deploy-model-pvc"
                     )
                 )
             ],

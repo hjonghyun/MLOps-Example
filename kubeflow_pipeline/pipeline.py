@@ -1,5 +1,5 @@
 import os
-
+import argparse
 import kfp
 import kfp.components as comp
 from kfp import dsl
@@ -12,8 +12,8 @@ import requests
     name="mnist using arcface",
     description="CT pipeline"
 )
-def mnist_pipeline():
-    ENV_MANAGE_URL = V1EnvVar(name='MANAGE_URL', value='')
+def mnist_pipeline(manage_url):
+    ENV_MANAGE_URL = V1EnvVar(name='MANAGE_URL', value=manage_url)
 
     data_0 = dsl.ContainerOp(
         name="load & preprocess data pipeline",
@@ -71,10 +71,15 @@ def mnist_pipeline():
         .apply(onprem.mount_pvc("deploy-model-pvc", volume_name="deploy-model", volume_mount_path="/deploy-model"))
 
 if __name__=="__main__":
-    host = "http://gold31006.k3.acornsoft.io"
-    namespace = "kubeflow-user-example-com"
-    username = "user@example.com"
-    password = "12341234"
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--host', type=str, default="")
+    
+    parser.add_argument('--namespace', type=str, default='')
+    parser.add_argument('--username', type=str, default='')
+    parser.add_argument('--password', type=str, default='')
+    parser.add_argument('--manage_url', type=str, default='')
+
+    args = parser.parse_args()
     
     session = requests.Session()
     response = session.get(host)
@@ -83,20 +88,20 @@ if __name__=="__main__":
         "Content-Type": "application/x-www-form-urlencoded",
     }
 
-    data = {"login": username, "password": password}
+    data = {"login": args.username, "password": args.password}
     session.post(response.url, headers=headers, data=data)
     session_cookie = session.cookies.get_dict()["authservice_session"]
     
     
     pipeline_name = "Mnist"
     pipeline_package_path = "pipeline.zip"
-    version = "v0.2.9"
+    version = "v0.3.0"
 
     experiment_name = "For Develop"
     run_name = "kubeflow study {}".format(version)
      
-    client = kfp.Client(host=f"{host}/pipeline", namespace=namespace, cookies=f"authservice_session={session_cookie}")
-    kfp.compiler.Compiler().compile(mnist_pipeline, pipeline_package_path)
+    client = kfp.Client(host=f"{args.host}/pipeline", namespace=args.namespace, cookies=f"authservice_session={session_cookie}")
+    kfp.compiler.Compiler().compile(mnist_pipeline(args.manage_url), pipeline_package_path)
 
     pipeline_id = client.get_pipeline_id(pipeline_name)
     if pipeline_id:
@@ -111,5 +116,5 @@ if __name__=="__main__":
             pipeline_name=pipeline_name
         )
     
-    experiment = client.create_experiment(name=experiment_name, namespace=namespace)
+    experiment = client.create_experiment(name=experiment_name, namespace=args.namespace)
     run = client.run_pipeline(experiment.id, run_name, pipeline_package_path)
