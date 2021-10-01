@@ -25,7 +25,13 @@ jobs:
             kfp==1.8.2
       - name: run pipeline to kubeflow
         run: python kubeflow_pipeline/pipeline.py
-
+        env:
+          MANAGE_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          KUBERNETES_HOST: ${{ secrets.KUBERNETES_HOST }}
+          PIPELINE_NAMESPACE: ${{ secrets.PIPELINE_NAMESPACE }}
+          PIPELINE_USER_NAME: ${{ secrets.PIPELINE_USER_NAME }}
+          PIPELINE_USER_PASS: ${{ secrets.PIPELINE_USER_PASS }}
+          
       - name: Slack Notification
         if: always()
         uses: rtCamp/action-slack-notify@v2
