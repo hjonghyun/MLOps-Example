@@ -71,10 +71,10 @@ def mnist_pipeline():
         .apply(onprem.mount_pvc("deploy-model-pvc", volume_name="deploy-model", volume_mount_path="/deploy-model"))
 
 if __name__=="__main__":
-    host = V1EnvVar(name='KUBERNETES_HOST', value="")
-    namespace = V1EnvVar(name='PIPELINE_NAMESPACE', value="")
-    username = V1EnvVar(name='PIPELINE_USER_NAME', value="")
-    password = V1EnvVar(name='PIPELINE_USER_PASS', value="")
+    host = os.getenv('KUBERNETES_HOST')
+    namespace = os.getenv('PIPELINE_NAMESPACE')
+    username = os.getenv('PIPELINE_USER_NAME')
+    password = os.getenv('PIPELINE_USER_PASS')
     
     session = requests.Session()
     response = session.get(host)
