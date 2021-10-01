@@ -35,7 +35,9 @@ jobs:
           docker push goldenbell1/mnist-analysis
           docker build kubeflow_pipeline/6_deploy -t goldenbell1/mnist-deploy
           docker push goldenbell1/mnist-deploy
-      
+        env:
+          MANAGE_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          
       - name: Slack Notification
         if: always()
         uses: rtCamp/action-slack-notify@v2
