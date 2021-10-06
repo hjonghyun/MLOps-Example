@@ -10,7 +10,7 @@ kf_url = "http://your kubernetes cluster URL"
 TRAIN_DATA_PATH="/data/mnist/train"
 FAISS_TRAIN_DATA_PATH="/data/faiss/train"
 DATA_INTERVAL = 1
-NUM_TRAINED_DATA = [10000, 10000]
+NUM_TRAINED_DATA = [10005, 10007]
 NUM_SEEKED_DATA = [0, 0]
 
 from apscheduler.schedulers.background import BackgroundScheduler

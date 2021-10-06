@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: training-alert
+  namespace: <your-namespace>
+spec:
+  selector:
+    matchLabels:
+      app: training-alert
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "false"      
+      labels:
+        app: training-alert
+    spec:
+      containers:
+        - image: <your image>
+          imagePullPolicy: Always
+          name: training-alert
+          ports:
+          - containerPort: 5000
+            name: ta
+            protocol: TCP
+          volumeMounts:
+          - mountPath: /data
+            name: data-storage
+      volumes:
+      - name: data-storage
+        persistentVolumeClaim:
+          claimName: data-pvc
+
+---
+
+apiVersion: v1                                                                                                                                                                                                                                            
+kind: Service                                                                                                                                                                                                                                             
+metadata:
+  name: training-alert
+  namespace: <your-namespace>                                                                                                                                                                                                            
+spec:
+  ports:
+  - name: training-alert                                                                                                                                                                                                                                           
+    nodePort: 31007                                                                                                                                                                                                                                      
+    port: 5000                                                                                                                                                                                                                                            
+    protocol: TCP                                                                                                                                                                                                                                         
+    targetPort: ta                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+  selector:
+    app: training-alert
+  type: NodePort

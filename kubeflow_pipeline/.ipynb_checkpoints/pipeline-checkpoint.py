@@ -13,7 +13,7 @@ import requests
     description="CT pipeline"
 )
 def mnist_pipeline():
-    ENV_MANAGE_URL = V1EnvVar(name='MANAGE_URL', value='')
+    ENV_MANAGE_URL = V1EnvVar(name='MANAGE_URL', value="")
 
     data_0 = dsl.ContainerOp(
         name="load & preprocess data pipeline",
@@ -71,10 +71,10 @@ def mnist_pipeline():
         .apply(onprem.mount_pvc("deploy-model-pvc", volume_name="deploy-model", volume_mount_path="/deploy-model"))
 
 if __name__=="__main__":
-    host = "http://gold31006.k3.acornsoft.io"
-    namespace = "kubeflow-user-example-com"
-    username = "user@example.com"
-    password = "12341234"
+    host = os.getenv('KUBERNETES_HOST')
+    namespace = os.getenv('PIPELINE_NAMESPACE')
+    username = os.getenv('PIPELINE_USER_NAME')
+    password = os.getenv('PIPELINE_USER_PASS')
     
     session = requests.Session()
     response = session.get(host)
@@ -90,7 +90,7 @@ if __name__=="__main__":
     
     pipeline_name = "Mnist"
     pipeline_package_path = "pipeline.zip"
-    version = "v0.2.9"
+    version = "v0.4.0"
 
     experiment_name = "For Develop"
     run_name = "kubeflow study {}".format(version)
