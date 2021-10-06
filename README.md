@@ -1,9 +1,14 @@
 # MLOps-Example
-[Blogging](https://byeongjo-kim.tistory.com/7)
+Original repository & [Blog](https://byeongjo-kim.tistory.com/7)
 
 ## System Design
 ![png](https://raw.githubusercontent.com/byeongjokim/MLOps-Example/main/png/system_design.png)
 
+##### 참고 
+##### [MLOps 수준 2: CI/CD 파이프라인 자동화](https://cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning#mlops_level_2_cicd_pipeline_automation)
+
+##### [Kubeflow Pipelines를 사용한 ML을 위한 CI/CD 개요](https://cloud.google.com/architecture/architecture-for-mlops-using-tfx-kubeflow-pipelines-and-cloud-build#cicd_architecture)
+        
 ## CI/CD
 ![png](https://raw.githubusercontent.com/byeongjokim/MLOps-Example/main/png/cicd0.png)
 
@@ -48,7 +53,21 @@ jobs:
           SLACK_MESSAGE: 'Build/Push Images :building_construction: - ${{job.status}}'
           SLACK_USERNAME: Github
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
-```
+```    
+    
+#  
+- GitHub actions에서 사용할 secrets(보안이 필요한 정보) 등록 필요
+  repository settings -> secrets -> New repository Secret
+ 
+    KUBERNETES_HOST: 쿠버네티스 클러스터 접속정보
+    PIPELINE_NAMESPACE: 파이프라인 배포할 네임스페이스
+    PIPELINE_USER_NAME: 쿠버네티스 클러스터 접속 유저명
+    PIPELINE_USER_PASS: 쿠버네티스 클러스터 접속 유저아이디
+    REGISTRY_PASSWORD: 이미지 저장소(도커) 패스워드
+    REGISTRY_USERNAME: 이미지 저장소(도커) 유저아이디
+    SLACK_WEBHOOK_URL: slack app을 통해 생성한 webhook urㅣ
+                       참고 (https://helloworld.kurly.com/blog/slack_block_kit/)
+
 
 ### CD
 - [yaml file](https://raw.githubusercontent.com/byeongjokim/MLOps-Example/main/.github/workflows/cd.yml)
@@ -101,6 +120,7 @@ jobs:
     - every Tuesday
     - new data is coming
 
+
 ## kubeflow pipelines
 - 0_data
     - **data 수집**
@@ -135,8 +155,22 @@ jobs:
 ### Serving Model using TorchServe
 ![png](https://raw.githubusercontent.com/byeongjokim/MLOps-Example/main/png/serving.png)
 
+##### 이 예제에서는 훈련된 모델의 배포까지 ML파이프라인에서 하지만 일반적인 머신러닝 조직에서는 ML파이프라인에서 배포까지 자동화 하진 않는것으로 보이니 참고할것
+```
+.....
+그러나 이와 같이 완전한 파이프라인을 만드는 것은 모든 조직에서 실용적이지 않을 수 있습니다. 예를 들어 일부 조직에서는 모델 교육 및 모델 배포가 다른 팀의 책임입니다. 따라서 범위
+대부분의 훈련 파이프라인은 서비스를 위해 배포하는 것이 아니라 훈련되고 검증된 모델을 등록하는 것으로 끝납니다.
+
+from Practitioners guide to MLOps/Google 2021
+```
+
 ### uploaded pipelines
 ![png](https://raw.githubusercontent.com/byeongjokim/MLOps-Example/main/png/pipelines0.png)
+
+- [kubeflow pipeline architectural-overview](https://www.kubeflow.org/docs/components/pipelines/overview/pipelines-overview/#architectural-overview)
+- [v1 SDK: Writing out metadata for the output viewers](https://www.kubeflow.org/docs/components/pipelines/sdk/output-viewer/#v1-sdk-writing-out-metadata-for-the-output-viewers)
+- [파이프라인 메트릭 내보내기 및 시각화](https://www.kubeflow.org/docs/components/pipelines/sdk/pipelines-metrics/)
+- [도커 이미지 빌드 없이 파이썬 함수에서 컴포넌트생성 방법(경량화된 컴포넌트)](https://github.com/kubeflow/pipelines/blob/master/samples/core/lightweight_component/lightweight_component.ipynb)
 
 ### confusion matrix(mlpipeline-ui-metadata)
 ![png](https://raw.githubusercontent.com/byeongjokim/MLOps-Example/main/png/pipelines1.png)
